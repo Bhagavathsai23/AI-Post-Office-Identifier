@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Office Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Post Office Predictor</h2>
+    <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address">
+    </div>
+    <div class="form-group">
+        <label for="pincode">Pin Code:</label>
+        <input type="text" id="pincode" name="pincode">
+    </div>
+    <button onclick="predictPostOffice()">Predict Post Office</button>
+
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    function predictPostOffice() {
+        const address = document.getElementById('address').value;
+        const pincode = document.getElementById('pincode').value;
+
+        fetch('http://127.0.0.1:5000/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ address: address, pincode: pincode }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('result').innerText = 'Predicted Post Office: ' + data.post_office;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+</body>
+</html>
